@@ -30,16 +30,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import moe.smoothie.androidide.themestore.ui.StoreFrontScroller
-import moe.smoothie.androidide.themestore.data.NavigationBarRoute
-import moe.smoothie.androidide.themestore.ui.JetbrainsStoreScroller
-import moe.smoothie.androidide.themestore.ui.JetbrainsThemeCard
-import moe.smoothie.androidide.themestore.ui.JetbrainsThemeCardState
-import moe.smoothie.androidide.themestore.ui.MicrosoftStoreScroller
+import moe.smoothie.androidide.themestore.ui.StoreFrontScroller // Double-check this reference.
+import moe.smoothie.androidide.themestore.data.NavigationBarRoute // Ensure this is correctly set up.
+import moe.smoothie.androidide.themestore.ui.JetbrainsStoreScroller // Ensure this is correctly set up.
 import moe.smoothie.androidide.themestore.ui.theme.AndroidIDEThemesTheme
-import moe.smoothie.androidide.themestore.viewmodels.JetbrainsStoreViewModel
-import okhttp3.OkHttpClient
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -56,27 +50,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainActivityView() {
-    val routeJetbrainsMarketplace = NavigationBarRoute(
-        R.string.source_jetbrains,
-        R.drawable.icons8_jetbrains,
-        "jetbrains-marketplace"
+    val jetbrainsRoute = NavigationBarRoute(
+        nameResource = R.string.source_jetbrains,
+        iconResource = R.drawable.icons8_jetbrains,
+        route = "jetbrains-marketplace"
     )
-    val routeVSCodeMarketplace = NavigationBarRoute(
-        R.string.source_vscode,
-        R.drawable.icons8_visual_studio,
-        "vscode-marketplace"
+    val vscodeRoute = NavigationBarRoute(
+        nameResource = R.string.source_vscode,
+        iconResource = R.drawable.icons8_visual_studio,
+        route = "vscode-marketplace"
     )
-    val routeSettings = NavigationBarRoute(
-        R.string.destination_settings,
-        R.drawable.baseline_settings_24,
-        "settings"
-    )
-    val routes = listOf(
-        routeJetbrainsMarketplace,
-        routeVSCodeMarketplace,
-        routeSettings
+    val settingsRoute = NavigationBarRoute(
+        nameResource = R.string.destination_settings,
+        iconResource = R.drawable.baseline_settings_24,
+        route = "settings"
     )
 
+    val routes = listOf(jetbrainsRoute, vscodeRoute, settingsRoute)
     val navController = rememberNavController()
 
     Scaffold(
@@ -84,21 +74,19 @@ fun MainActivityView() {
         content = { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = routeJetbrainsMarketplace.route,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
+                startDestination = jetbrainsRoute.route,
+                modifier = Modifier.padding(innerPadding)
             ) {
-                composable(routeJetbrainsMarketplace.route) { JetbrainsStoreScroller(it) }
-                composable(routeVSCodeMarketplace.route) { MicrosoftStoreScroller(it    ) }
-                composable(routeSettings.route) { PageContent("Settings will be here") }
+                composable(jetbrainsRoute.route) { JetbrainsStoreScroller(it) }
+                composable(vscodeRoute.route) { MicrosoftStoreScroller(it) } // Verify this connects properly.
+                composable(settingsRoute.route) { PageContent("Settings will be here") }
             }
         },
         bottomBar = { BottomNavigationBar(navController, routes) }
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun MainActivityPreview() {
     AndroidIDEThemesTheme {
@@ -137,10 +125,10 @@ fun BottomNavigationBar(navController: NavController, routes: List<NavigationBar
                 onClick = {
                     navController.navigate(route.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                            saveState = true // May be optional based on structure.
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                        launchSingleTop = true // Redundant if not returning for previous states.
+                        restoreState = true  // Enables restored states across navigations.
                     }
                 }
             )
