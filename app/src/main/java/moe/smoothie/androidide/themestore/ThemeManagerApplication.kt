@@ -3,20 +3,15 @@ package moe.smoothie.androidide.themestore
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp
-class ThemeManagerApplication : Application()
-package moe.smoothie.androidide.themestore
-
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
-
+/**
+ * The [ThemeManagerApplication] is the base class for maintaining global application state. 
+ * It integrates Dagger Hilt for dependency injection throughout the app.
+ */
 @HiltAndroidApp
 class ThemeManagerApplication : Application() {
     
     override fun onCreate() {
         super.onCreate()
-        // Initial setup code can be added here if needed
+        // Initialize necessary components of your application here
     }
-    
-    // Additional methods or properties can be added as necessary
 }

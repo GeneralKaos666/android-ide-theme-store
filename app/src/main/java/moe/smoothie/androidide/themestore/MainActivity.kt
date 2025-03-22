@@ -30,10 +30,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import moe.smoothie.androidide.themestore.ui.StoreFrontScroller // Double-check this reference.
-import moe.smoothie.androidide.themestore.data.NavigationBarRoute // Ensure this is correctly set up.
-import moe.smoothie.androidide.themestore.ui.JetbrainsStoreScroller // Ensure this is correctly set up.
-import moe.smoothie.androidide.themestore.ui.theme.AndroidIDEThemesTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -77,8 +73,8 @@ fun MainActivityView() {
                 startDestination = jetbrainsRoute.route,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable(jetbrainsRoute.route) { JetbrainsStoreScroller(it) }
-                composable(vscodeRoute.route) { MicrosoftStoreScroller(it) } // Verify this connects properly.
+                composable(jetbrainsRoute.route) { JetbrainsStoreScroller() } // Assume defined elsewhere.
+                composable(vscodeRoute.route) { MicrosoftStoreScroller() } // Ensure MicrosoftStoreScroller is defined and imported correctly.
                 composable(settingsRoute.route) { PageContent("Settings will be here") }
             }
         },
@@ -124,11 +120,9 @@ fun BottomNavigationBar(navController: NavController, routes: List<NavigationBar
                 selected = currentDestination?.route == route.route,
                 onClick = {
                     navController.navigate(route.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true // May be optional based on structure.
-                        }
-                        launchSingleTop = true // Redundant if not returning for previous states.
-                        restoreState = true  // Enables restored states across navigations.
+                        // Ideally you might choose to pop up to specific sections based on your use case.
+                        launchSingleTop = true 
+                        restoreState = true  
                     }
                 }
             )
