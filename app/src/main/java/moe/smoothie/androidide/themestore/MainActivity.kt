@@ -27,9 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers.Main
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -46,23 +44,24 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainActivityView() {
-    val jetbrainsRoute = NavigationBarRoute(
-        nameResource = R.string.source_jetbrains,
-        iconResource = R.drawable.icons8_jetbrains,
-        route = "jetbrains-marketplace"
-    )
-    val vscodeRoute = NavigationBarRoute(
-        nameResource = R.string.source_vscode,
-        iconResource = R.drawable.icons8_visual_studio,
-        route = "vscode-marketplace"
-    )
-    val settingsRoute = NavigationBarRoute(
-        nameResource = R.string.destination_settings,
-        iconResource = R.drawable.baseline_settings_24,
-        route = "settings"
+    val routes = listOf(
+        NavigationBarRoute(
+            nameResource = R.string.source_jetbrains,
+            iconResource = R.drawable.icons8_jetbrains,
+            route = "jetbrains-marketplace"
+        ),
+        NavigationBarRoute(
+            nameResource = R.string.source_vscode,
+            iconResource = R.drawable.icons8_visual_studio,
+            route = "vscode-marketplace"
+        ),
+        NavigationBarRoute(
+            nameResource = R.string.destination_settings,
+            iconResource = R.drawable.baseline_settings_24,
+            route = "settings"
+        )
     )
 
-    val routes = listOf(jetbrainsRoute, vscodeRoute, settingsRoute)
     val navController = rememberNavController()
 
     Scaffold(
@@ -70,12 +69,12 @@ fun MainActivityView() {
         content = { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = jetbrainsRoute.route,
+                startDestination = routes.first().route,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable(jetbrainsRoute.route) { JetbrainsStoreScroller() } // Assume defined elsewhere.
-                composable(vscodeRoute.route) { MicrosoftStoreScroller() } // Ensure MicrosoftStoreScroller is defined and imported correctly.
-                composable(settingsRoute.route) { PageContent("Settings will be here") }
+                composable(routes[0].route) { JetbrainsStoreScroller() } // Ensure it's defined.
+                composable(routes[1].route) { MicrosoftStoreScroller() } // Ensure it's defined.
+                composable(routes[2].route) { PageContent("Settings will be here") }
             }
         },
         bottomBar = { BottomNavigationBar(navController, routes) }
@@ -119,10 +118,11 @@ fun BottomNavigationBar(navController: NavController, routes: List<NavigationBar
                 label = { Text(stringResource(route.nameResource)) },
                 selected = currentDestination?.route == route.route,
                 onClick = {
-                    navController.navigate(route.route) {
-                        // Ideally you might choose to pop up to specific sections based on your use case.
-                        launchSingleTop = true 
-                        restoreState = true  
+                    if (currentDestination?.route != route.route) {
+                        navController.navigate(route.route) {
+                            launchSingleTop = true 
+                            restoreState = true  
+                        }
                     }
                 }
             )

@@ -4,14 +4,25 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 /**
- * The [ThemeManagerApplication] is the base class for maintaining global application state. 
- * It integrates Dagger Hilt for dependency injection throughout the app.
+ * The [ThemeManagerApplication] class serves as the base application class 
+ * for managing global app state and dependency injection setup using Dagger Hilt.
  */
 @HiltAndroidApp
 class ThemeManagerApplication : Application() {
-    
+
     override fun onCreate() {
         super.onCreate()
-        // Initialize necessary components of your application here
+        
+        // Initialize any global application components or libraries here.
+        // For example:
+        // initializeSomeLibrary()
+        // setupLogging()
     }
+
+    // Example function you might want to implement:
+    /*
+    private fun initializeSomeLibrary() {
+        // Code to initialize third-party libraries or application state.
+    }
+    */
 }

@@ -16,6 +16,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.OkHttpClient
 import javax.inject.Inject
@@ -45,6 +47,7 @@ data class ThemeState(
 
 @AndroidEntryPoint
 class ThemeActivity : ComponentActivity() {
+
     companion object {
         const val EXTRA_STORE_TYPE: String = "STORE_TYPE"
         const val EXTRA_ICON_URL: String = "ICON_URL"
@@ -60,7 +63,6 @@ class ThemeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Assuming that getSerializableExtraApiDependent is well-implemented.
         val store = intent.getSerializableExtra(EXTRA_STORE_TYPE) as? StoreType ?: run {
             Log.e(tag, "No store type passed in the intent")
             finish()
@@ -69,20 +71,22 @@ class ThemeActivity : ComponentActivity() {
 
         setContent {
             AndroidIDEThemesTheme {
-                // Using rememberScrollState directly in ThemeView
+                // Initialize the scroll state here.
+                val scrollState = rememberScrollState()
+                
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
                         ThemeActivityTopBar(
                             storeName = stringResource(store.storeName),
                             storeIcon = painterResource(store.storeIcon),
-                            scrolled = rememberScrollState().value != 0,
-                            backButtonCallback = { finish() },
+                            scrolled = scrollState.value != 0,
+                            backButtonCallback = { finish() }
                         )
                     },
                 ) { innerPadding ->
                     // Pass innerPadding and scrollState to ThemeView for proper display.
-                    ThemeView(innerPadding)
+                    ThemeView(innerPadding, scrollState)
                 }
             }
         }
@@ -90,15 +94,16 @@ class ThemeActivity : ComponentActivity() {
 }
 
 @Composable
-private fun ThemeView(innerPadding: PaddingValues) {
+private fun ThemeView(innerPadding: PaddingValues, scrollState: ScrollState) {
     // Use Column directly without Box unless necessary.
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .padding(innerPadding)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
     ) {
-        repeat(30) {
-            Text("Something $it", Modifier.padding(10.dp))
+        repeat(30) { index ->
+            Text("Something $index", Modifier.padding(10.dp))
         }
     }
 }

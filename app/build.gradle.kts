@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
-//    kotlin("jvm")
     kotlin("plugin.serialization")
 }
 
@@ -20,9 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        vectorDrawables { useSupportLibrary = true }
     }
 
     buildTypes {
@@ -34,23 +31,26 @@ android {
             )
         }
     }
+    
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17 // Updated to modern version
+        targetCompatibility = JavaVersion.VERSION_17 // Updated to modern version
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17" // Updated to match Java compatibility
     }
+
     buildFeatures {
         compose = true
     }
+    
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() // Use a property instead of hard-coded value
     }
+    
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
     }
 }
 
@@ -63,13 +63,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    
     implementation(libs.hilt.android)
+    
     implementation(libs.okhttp)
     implementation(libs.okhttp.coroutines)
-    implementation(libs.kotlinx.serialization.json)
+    
+    implementation(libs.kotlinx.serialization.json) // Ensure all needed serializers are included
+
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
+    
     implementation (libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
@@ -82,17 +88,22 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    
     androidTestImplementation(libs.hilt.android.testing)
+    
     androidTestImplementation(libs.androidx.navigation.testing)
 
     kaptAndroidTest(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.ui.tooling)
+    
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
 kapt {
-    correctErrorTypes = true
+   correctErrorTypes = true
 }

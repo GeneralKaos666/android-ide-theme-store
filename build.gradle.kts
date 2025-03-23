@@ -5,6 +5,16 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     kotlin("kapt") version "2.0.20" apply false
     id("com.google.dagger.hilt.android") version "2.52" apply false
-//    kotlin("jvm") version "2.0.20" apply false
     kotlin("plugin.serialization") version "2.0.20" apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.buildDir)
 }
