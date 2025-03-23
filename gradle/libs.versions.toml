@@ -15,7 +15,7 @@ composeBom = "2024.09.02"
 lifecycleViewmodelCompose = "2.8.6"
 navigationCompose = "2.8.1"
 okhttp = "4.12.0"
-okhttp-coroutines = "5.0.0-alpha-14"
+okhttpCoroutines = "5.0.0-alpha-14"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,30 +26,11 @@ androidx-navigation-testing = { module = "androidx.navigation:navigation-testing
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref="hiltAndroid" }  # Added proper reference
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref ="hiltAndroidCompiler" }
+hilt-android-testing= { module ="com.google.dagger:hilt-android-testing", version.ref="hiltAndroid" }  # Added proper reference
 junit-junit4= { group="junit", name="junit", version.ref="junit"}  # This can remain for JUnit 4 specific tests
-androidx-junit + {
-    group="androidx.test.ext",
-    name="junit",
-    version.ref="junitVersion" 
-}
-androidx-espresso-core  + {
-    group=“androidx.test.espresso”,
-    name=“espresso-core”,
-    version.ref=”espressoCore”
-}
-androidx-lifecycle-runtime-ktx + {
-     group=”androidx.lifecycle”,
-     name=”lifecycle-runtime-ktx”,
-     version.ref=”lifecycleRuntimeKtx”
-} 
-androidx-activity-compose + {
-    group=”androidx.activity”,
-     name=”activity-compose”,
-   }
-anish + {
-    group=”org.jetbrains.kotlin”,
-    name=”kotlin”,
-    version.ref=”kotlin”
-}
+androidx-junit= { group="androidx.test.ext", name="junit", version.ref="junit" }  # Correctly reference 'junit'
+androidx-espresso-core= { group="androidx.test.espresso", name="espresso-core", version.ref="espressoCore" }
+androidx-lifecycle-runtime-ktx= { group="androidx.lifecycle", name="lifecycle-runtime-ktx", version.ref="lifecycleRuntimeKtx" } 
+androidx-activity-compose= { group="androidx.activity", name="activity-compose", version.ref="activityCompose" }  # Added correct version reference
+kotlin= { group="org.jetbrains.kotlin", name="kotlin", version.ref="kotlin" }
