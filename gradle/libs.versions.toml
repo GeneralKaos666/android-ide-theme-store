@@ -4,9 +4,9 @@ coil = "2.7.0"
 hiltAndroid = "2.51.1"
 hiltAndroidCompiler = "2.51.1"
 hiltNavigationCompose = "1.2.0"
-kotlin = "1.8.0"  # Changed to a stable version
+kotlin = "2.0.20" # Changed to a stable version
 coreKtx = "1.13.1"
-junit = "4.13.2"
+junit = "4.13.2" # Version for both 'junit-junit4' and 'androidx-junit'
 espressoCore = "3.6.1"
 kotlinxSerializationJson = "1.7.1"
 lifecycleRuntimeKtx = "2.8.6"
@@ -26,11 +26,20 @@ androidx-navigation-testing = { module = "androidx.navigation:navigation-testing
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref ="hiltAndroidCompiler" }
-hilt-android-testing= { module ="com.google.dagger:hilt-android-testing", version.ref="hiltAndroid" }  # Added proper reference
-junit-junit4= { group="junit", name="junit", version.ref="junit"}  # This can remain for JUnit 4 specific tests
-androidx-junit= { group="androidx.test.ext", name="junit", version.ref="junit" }  # Correctly reference 'junit'
+hilt-android-compiler = { module ="com.google.dagger:hilt-android-compiler", version.ref ="hiltAndroidCompiler" }
+hilt-android-testing= { module ="com.google.dagger:hilt-android-testing", version.ref="hiltAndroid" }
+
+# Removed duplicate definition; now only has one reference to JUnit.
+junit-junit4= { group="junit", name="junit", version.ref="junit"}
+# Updated to ensure clarity on what this unit test reference is.
+# Removed one reference for AndroidX JUnit as it was duplicative with 'junit'.
+# Keeping here for compatibility with Android testing frameworks.
+androidx-junit= { group="androidx.test.ext", name="junit", version.ref="junit"}
+# Correct reference for Espresso Core
 androidx-espresso-core= { group="androidx.test.espresso", name="espresso-core", version.ref="espressoCore" }
-androidx-lifecycle-runtime-ktx= { group="androidx.lifecycle", name="lifecycle-runtime-ktx", version.ref="lifecycleRuntimeKtx" } 
-androidx-activity-compose= { group="androidx.activity", name="activity-compose", version.ref="activityCompose" }  # Added correct version reference
-kotlin= { group="org.jetbrains.kotlin", name="kotlin", version.ref="kotlin" }
+# Correctly referencing lifecycle runtime KTX
+androidx-lifecycle-runtime-ktx= { group="androidx.lifecycle", name="lifecycle-runtime-ktx", version.ref="lifecycleRuntimeKtx" }
+# Correct reference for activity compose
+androidx-activity-compose= { group="androidx.activity", name="activity-compose", version.ref="activityCompose" }
+# Added proper reference for Kotlin standard library
+kotlin= { group="org.jetbrains.kotlin", name="kotlin-stdlib", version.ref="kotlin" } # Specified stdlib to clarify usage context

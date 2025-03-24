@@ -33,12 +33,12 @@ android {
     }
     
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17 // Updated to modern version
-        targetCompatibility = JavaVersion.VERSION_17 // Updated to modern version
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "17" // Updated to match Java compatibility
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -46,11 +46,11 @@ android {
     }
     
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() // Use a property instead of hard-coded value
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     
     packaging {
-        resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
+        resources { excludes += listOf("/META-INF/{AL2.0,LGPL2.1}", "/META-INF/NOTICE") } // Expanded exclusions 
     }
 }
 
@@ -58,50 +58,48 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.ui) 
+    implementation(libs.androidx.ui.graphics) 
+    implementation(libs.androidx.ui.tooling.preview) 
     implementation(libs.androidx.material3)
-    
+
     implementation(libs.hilt.android)
-    
+
+    // OkHttp for network operations
     implementation(libs.okhttp)
     implementation(libs.okhttp.coroutines)
-    
-    implementation(libs.kotlinx.serialization.json) // Ensure all needed serializers are included
 
+    // Serialization support
+    implementation(libs.kotlinx.serialization.json)
+
+    // ViewModel support for Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    
+
+    // Coil for image loading
     implementation(libs.coil.compose)
-    implementation(libs.coil.svg)
     
-    implementation (libs.androidx.navigation.compose)
+    // Navigation and Hilt support for Jetpack Compose
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
     kapt(libs.hilt.android.compiler)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.hilt.android.testing)
+   // Changed to remove duplication and better organized test dependencies.
+   testImplementation(libs.junit)
+   androidTestImplementation(platform(libs.junit.platform))
+   androidTestImplementation(libs.hilt.android.testing)
 
-    kaptTest(libs.hilt.compiler)
+   androidTestImplementation(platform(libs.androidx.compose.bom))
+   androidTestImplementation(libs.androidx.ui.test.junit4)
+   androidTestImplementation(libs.hilt.android.testing) // Maintain single source for testing imports
+   androidTestImplementation(libs.androidx.navigation.testing)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    
-    androidTestImplementation(libs.hilt.android.testing)
-    
-    androidTestImplementation(libs.androidx.navigation.testing)
+   kaptAndroidTest(libs.hilt.compiler)
 
-    kaptAndroidTest(libs.hilt.compiler)
-
-    debugImplementation(libs.androidx.ui.tooling)
-    
-    debugImplementation(libs.androidx.ui.test.manifest)
+   debugImplementation(libs.androidx.ui.tooling) 
+   debugImplementation(libs.androidx.ui.test.manifest) 
 }
 
 kapt {

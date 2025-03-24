@@ -25,19 +25,4 @@ allprojects {
 // Task creation for cleaning build directories.
 tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
-}lugins.compose.compiler) apply false
-    kotlin("kapt") version kotlinVersion apply false
-    id("com.google.dagger.hilt.android") version "2.52" apply false
-    kotlin("plugin.serialization") version kotlinVersion apply false
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-tasks.register<Delete>("clean") {
-    delete(rootProject.buildDir)
 }
